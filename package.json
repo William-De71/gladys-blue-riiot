@@ -1,0 +1,43 @@
+{
+  "name": "gladys-blue-riiot",
+  "version": "0.1.0",
+  "private": true,
+  "description": "External Gladys Assistant integration for Blue Riiot Blue Connect pool analysers: temperature, pH, redox, salinity, advice, scenes and a dashboard widget.",
+  "homepage": "https://github.com/William-De71/gladys-blue-riiot",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/William-De71/gladys-blue-riiot.git"
+  },
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@gladysassistant/integration-sdk": "^0.16.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.10"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "gladys-assistant",
+    "gladys-assistant-integration",
+    "blue-riiot",
+    "blue-connect",
+    "pool",
+    "swimming-pool",
+    "home-automation"
+  ]
+}

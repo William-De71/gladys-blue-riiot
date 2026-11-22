@@ -1,0 +1,1478 @@
+{
+  "manifest_version": 1,
+  "type": "device",
+  "name": "Blue Riiot",
+  "description": {
+    "en": "Blue Connect pool analysers: temperature, pH, redox, salt, advice, scenes, widget.",
+    "fr": "Analyseurs de piscine Blue Connect : température, pH, redox, sel, conseils, scènes.",
+    "de": "Blue-Connect-Poolanalysatoren: Temperatur, pH, Redox, Salz, Hinweise, Szenen.",
+    "es": "Analizadores de piscina Blue Connect: temperatura, pH, redox, sal, consejos, escenas."
+  },
+  "version": "0.1.0",
+  "docker_image": "ghcr.io/william-de71/gladys-blue-riiot:0.1.0",
+  "gladys_version": ">=5.3.0",
+  "categories": ["environment", "appliances"],
+  "keywords": [
+    "piscine",
+    "pool",
+    "spa",
+    "Blue Connect",
+    "Blue Connect Go",
+    "Blue Extender",
+    "ph",
+    "redox",
+    "chlore",
+    "piscina"
+  ],
+  "cover_image": "https://raw.githubusercontent.com/William-De71/gladys-blue-riiot/main/cover.jpg",
+  "transports": ["cloud"],
+  "config_schema": [
+    {
+      "key": "intro",
+      "type": "section",
+      "label": {
+        "en": "Blue Connect account",
+        "fr": "Compte Blue Connect",
+        "de": "Blue-Connect-Konto",
+        "es": "Cuenta Blue Connect"
+      },
+      "description": {
+        "en": "The e-mail and password you use in the Blue Connect app. Blue Riiot has no public API: the integration reads your pools through the cloud interface of the app, read-only, and it may change without notice. Your password stays in Gladys and only goes to Blue Riiot.",
+        "fr": "L’e-mail et le mot de passe de l’application Blue Connect. Blue Riiot n’a pas d’API publique : l’intégration lit vos piscines par l’interface cloud de l’application, en lecture seule, qui peut changer sans préavis. Votre mot de passe reste dans Gladys et ne part que chez Blue Riiot.",
+        "de": "E-Mail-Adresse und Passwort der Blue-Connect-App. Blue Riiot hat keine öffentliche API: Die Integration liest Ihre Pools über die Cloud-Schnittstelle der App, nur lesend, und diese kann sich ohne Vorankündigung ändern. Ihr Passwort bleibt in Gladys und geht nur an Blue Riiot.",
+        "es": "El correo y la contraseña de la aplicación Blue Connect. Blue Riiot no tiene API pública: la integración lee sus piscinas mediante la interfaz en la nube de la aplicación, solo lectura, que puede cambiar sin previo aviso. Su contraseña se queda en Gladys y solo va a Blue Riiot."
+      }
+    },
+    {
+      "key": "email",
+      "type": "string",
+      "label": {
+        "en": "E-mail",
+        "fr": "E-mail",
+        "de": "E-Mail",
+        "es": "Correo electrónico"
+      },
+      "placeholder": {
+        "en": "you@example.com",
+        "fr": "vous@exemple.fr",
+        "de": "sie@beispiel.de",
+        "es": "usted@ejemplo.es"
+      },
+      "required": true
+    },
+    {
+      "key": "password",
+      "type": "secret",
+      "label": {
+        "en": "Password",
+        "fr": "Mot de passe",
+        "de": "Passwort",
+        "es": "Contraseña"
+      },
+      "required": true
+    },
+    {
+      "key": "options_intro",
+      "type": "section",
+      "label": {
+        "en": "Options",
+        "fr": "Options",
+        "de": "Optionen",
+        "es": "Opciones"
+      },
+      "description": {
+        "en": "A Blue Connect measures every 20 minutes to a few hours, depending on the model and how it reaches the cloud. Each reading costs about five requests for one pool and one Blue Connect.",
+        "fr": "Un Blue Connect mesure toutes les 20 minutes à quelques heures, selon le modèle et sa liaison au cloud. Chaque lecture coûte environ cinq requêtes pour une piscine et un Blue Connect.",
+        "de": "Ein Blue Connect misst alle 20 Minuten bis alle paar Stunden, je nach Modell und Verbindung zur Cloud. Jedes Lesen kostet etwa fünf Anfragen für einen Pool und ein Blue Connect.",
+        "es": "Un Blue Connect mide cada 20 minutos o cada pocas horas, según el modelo y su conexión a la nube. Cada lectura cuesta unas cinco peticiones para una piscina y un Blue Connect."
+      }
+    },
+    {
+      "key": "poll_interval",
+      "type": "number",
+      "label": {
+        "en": "Reading interval (min)",
+        "fr": "Intervalle de lecture (min)",
+        "de": "Leseintervall (Min.)",
+        "es": "Intervalo de lectura (min)"
+      },
+      "description": {
+        "en": "10 to 120 minutes, 30 by default.",
+        "fr": "De 10 à 120 minutes, 30 par défaut.",
+        "de": "10 bis 120 Minuten, standardmäßig 30.",
+        "es": "De 10 a 120 minutos, 30 por defecto."
+      },
+      "min": 10,
+      "max": 120,
+      "default": 30,
+      "required": false
+    },
+    {
+      "key": "language",
+      "type": "select",
+      "label": {
+        "en": "Language of the texts",
+        "fr": "Langue des textes",
+        "de": "Sprache der Texte",
+        "es": "Idioma de los textos"
+      },
+      "description": {
+        "en": "Feature names, advice of the app and scene summaries. Automatic: the language of your dashboard, once the Blue Riiot widget has been displayed.",
+        "fr": "Noms des fonctionnalités, conseils de l’application et résumés des scènes. Automatique : la langue de votre tableau de bord, dès que le widget Blue Riiot a été affiché.",
+        "de": "Namen der Funktionen, Hinweise der App und Szenen-Zusammenfassungen. Automatisch: die Sprache Ihres Dashboards, sobald das Blue-Riiot-Widget angezeigt wurde.",
+        "es": "Nombres de las funciones, consejos de la aplicación y resúmenes de las escenas. Automático: el idioma de su panel, en cuanto se haya mostrado el widget de Blue Riiot."
+      },
+      "options": [
+        {
+          "value": "auto",
+          "label": {
+            "en": "Automatic",
+            "fr": "Automatique",
+            "de": "Automatisch",
+            "es": "Automático"
+          }
+        },
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "English",
+            "de": "English",
+            "es": "English"
+          }
+        },
+        {
+          "value": "fr",
+          "label": {
+            "en": "Français",
+            "fr": "Français",
+            "de": "Français",
+            "es": "Français"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "Deutsch",
+            "fr": "Deutsch",
+            "de": "Deutsch",
+            "es": "Deutsch"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Español",
+            "fr": "Español",
+            "de": "Español",
+            "es": "Español"
+          }
+        }
+      ],
+      "default": "auto",
+      "required": false
+    }
+  ],
+  "actions": [
+    {
+      "key": "test_connection",
+      "label": {
+        "en": "Test the account",
+        "fr": "Tester le compte",
+        "de": "Konto testen",
+        "es": "Probar la cuenta"
+      },
+      "description": {
+        "en": "Logs in to Blue Riiot with this account and counts its pools and Blue Connect devices. Also resumes the readings after a refused login.",
+        "fr": "Se connecte à Blue Riiot avec ce compte et compte ses piscines et ses Blue Connect. Relance aussi les lectures après un refus de connexion.",
+        "de": "Meldet sich mit diesem Konto bei Blue Riiot an und zählt Pools und Blue-Connect-Geräte. Setzt das Lesen nach einer abgelehnten Anmeldung fort.",
+        "es": "Inicia sesión en Blue Riiot con esta cuenta y cuenta sus piscinas y Blue Connect. También reanuda las lecturas tras un inicio de sesión rechazado."
+      },
+      "timeout_seconds": 45
+    }
+  ],
+  "widgets": [
+    {
+      "key": "pool",
+      "label": {
+        "en": "Pool water",
+        "fr": "Eau de la piscine",
+        "de": "Poolwasser",
+        "es": "Agua de la piscina"
+      },
+      "description": {
+        "en": "Temperature, pH, redox and salt against the ideal ranges, their history, the advice.",
+        "fr": "Température, pH, redox et sel face aux plages idéales, l’historique, le conseil.",
+        "de": "Temperatur, pH, Redox und Salz gegenüber den Idealbereichen, Verlauf, Hinweis.",
+        "es": "Temperatura, pH, redox y sal frente a los rangos ideales, historial, consejo."
+      },
+      "icon": "droplet",
+      "settings": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          },
+          "description": {
+            "en": "Leave empty for the first Blue Connect of the account.",
+            "fr": "Laissez vide pour le premier Blue Connect du compte.",
+            "de": "Leer lassen für das erste Blue Connect des Kontos.",
+            "es": "Déjelo vacío para el primer Blue Connect de la cuenta."
+          },
+          "required": false
+        },
+        {
+          "key": "chart",
+          "type": "select",
+          "label": {
+            "en": "Chart",
+            "fr": "Graphique",
+            "de": "Diagramm",
+            "es": "Gráfico"
+          },
+          "description": {
+            "en": "Shown once the Blue Connect device is created in Gladys.",
+            "fr": "Affiché dès que l’appareil Blue Connect est créé dans Gladys.",
+            "de": "Wird angezeigt, sobald das Blue-Connect-Gerät in Gladys angelegt ist.",
+            "es": "Se muestra en cuanto el dispositivo Blue Connect está creado en Gladys."
+          },
+          "options": [
+            {
+              "value": "temperature",
+              "label": {
+                "en": "Water temperature",
+                "fr": "Température de l’eau",
+                "de": "Wassertemperatur",
+                "es": "Temperatura del agua"
+              }
+            },
+            {
+              "value": "ph",
+              "label": {
+                "en": "pH",
+                "fr": "pH",
+                "de": "pH-Wert",
+                "es": "pH"
+              }
+            },
+            {
+              "value": "orp",
+              "label": {
+                "en": "Redox",
+                "fr": "Redox",
+                "de": "Redox",
+                "es": "Redox"
+              }
+            },
+            {
+              "value": "salinity",
+              "label": {
+                "en": "Salinity",
+                "fr": "Salinité",
+                "de": "Salzgehalt",
+                "es": "Salinidad"
+              }
+            },
+            {
+              "value": "none",
+              "label": {
+                "en": "No chart",
+                "fr": "Pas de graphique",
+                "de": "Kein Diagramm",
+                "es": "Sin gráfico"
+              }
+            }
+          ],
+          "default": "temperature",
+          "required": false
+        },
+        {
+          "key": "interval",
+          "type": "select",
+          "label": {
+            "en": "Chart period",
+            "fr": "Période du graphique",
+            "de": "Zeitraum des Diagramms",
+            "es": "Periodo del gráfico"
+          },
+          "options": [
+            {
+              "value": "last-day",
+              "label": {
+                "en": "Last 24 hours",
+                "fr": "Dernières 24 heures",
+                "de": "Letzte 24 Stunden",
+                "es": "Últimas 24 horas"
+              }
+            },
+            {
+              "value": "last-three-days",
+              "label": {
+                "en": "Last 3 days",
+                "fr": "3 derniers jours",
+                "de": "Letzte 3 Tage",
+                "es": "Últimos 3 días"
+              }
+            },
+            {
+              "value": "last-week",
+              "label": {
+                "en": "Last 7 days",
+                "fr": "7 derniers jours",
+                "de": "Letzte 7 Tage",
+                "es": "Últimos 7 días"
+              }
+            },
+            {
+              "value": "last-month",
+              "label": {
+                "en": "Last 30 days",
+                "fr": "30 derniers jours",
+                "de": "Letzte 30 Tage",
+                "es": "Últimos 30 días"
+              }
+            }
+          ],
+          "default": "last-week",
+          "required": false
+        }
+      ]
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "new_measure",
+      "label": {
+        "en": "Blue Riiot: new measure",
+        "fr": "Blue Riiot : nouvelle mesure",
+        "de": "Blue Riiot: neue Messung",
+        "es": "Blue Riiot: nueva medida"
+      },
+      "description": {
+        "en": "The Blue Connect sent a new measure. Checked every 30 minutes by default.",
+        "fr": "Le Blue Connect a envoyé une nouvelle mesure. Vérifié toutes les 30 minutes par défaut.",
+        "de": "Das Blue Connect hat eine neue Messung gesendet. Standardmäßig alle 30 Minuten geprüft.",
+        "es": "El Blue Connect envió una nueva medida. Se comprueba cada 30 minutos por defecto."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          },
+          "description": {
+            "en": "One of the Blue Connect devices. Leave empty for any of them.",
+            "fr": "Un des Blue Connect. Laissez vide pour tous.",
+            "de": "Eines der Blue-Connect-Geräte. Leer lassen für jedes.",
+            "es": "Uno de los Blue Connect. Déjelo vacío para cualquiera."
+          },
+          "required": false
+        }
+      ],
+      "variables": [
+        {
+          "key": "device_name",
+          "type": "string",
+          "label": {
+            "en": "Device name",
+            "fr": "Nom de l’appareil",
+            "de": "Gerätename",
+            "es": "Nombre del dispositivo"
+          }
+        },
+        {
+          "key": "temperature",
+          "type": "number",
+          "label": {
+            "en": "Water temperature (°C)",
+            "fr": "Température de l’eau (°C)",
+            "de": "Wassertemperatur (°C)",
+            "es": "Temperatura del agua (°C)"
+          }
+        },
+        {
+          "key": "ph",
+          "type": "number",
+          "label": {
+            "en": "pH",
+            "fr": "pH",
+            "de": "pH-Wert",
+            "es": "pH"
+          }
+        },
+        {
+          "key": "orp",
+          "type": "number",
+          "label": {
+            "en": "Redox (mV)",
+            "fr": "Redox (mV)",
+            "de": "Redox (mV)",
+            "es": "Redox (mV)"
+          }
+        },
+        {
+          "key": "salinity",
+          "type": "number",
+          "label": {
+            "en": "Salinity (g/L)",
+            "fr": "Salinité (g/L)",
+            "de": "Salzgehalt (g/L)",
+            "es": "Salinidad (g/L)"
+          },
+          "description": {
+            "en": "Only on the models that measure it.",
+            "fr": "Seulement sur les modèles qui la mesurent.",
+            "de": "Nur bei den Modellen, die ihn messen.",
+            "es": "Solo en los modelos que la miden."
+          }
+        },
+        {
+          "key": "water_quality",
+          "type": "string",
+          "label": {
+            "en": "Water quality",
+            "fr": "Qualité de l’eau",
+            "de": "Wasserqualität",
+            "es": "Calidad del agua"
+          },
+          "description": {
+            "en": "ok, warning or critical: the worst of pH, redox and salinity against the ideal ranges of Blue Riiot.",
+            "fr": "ok, warning ou critical : le pire de pH, redox et salinité face aux plages idéales de Blue Riiot.",
+            "de": "ok, warning oder critical: der schlechteste Wert von pH, Redox und Salzgehalt gegenüber den Idealbereichen von Blue Riiot.",
+            "es": "ok, warning o critical: el peor de pH, redox y salinidad frente a los rangos ideales de Blue Riiot."
+          }
+        },
+        {
+          "key": "measured_at",
+          "type": "string",
+          "label": {
+            "en": "Measured at",
+            "fr": "Mesuré à",
+            "de": "Gemessen um",
+            "es": "Medido a las"
+          },
+          "description": {
+            "en": "ISO 8601 (UTC).",
+            "fr": "ISO 8601 (UTC).",
+            "de": "ISO 8601 (UTC).",
+            "es": "ISO 8601 (UTC)."
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          },
+          "description": {
+            "en": "A sentence ready to put in a message.",
+            "fr": "Une phrase prête à mettre dans un message.",
+            "de": "Ein Satz, fertig für eine Nachricht.",
+            "es": "Una frase lista para poner en un mensaje."
+          }
+        }
+      ]
+    },
+    {
+      "key": "out_of_range",
+      "label": {
+        "en": "Blue Riiot: value out of range",
+        "fr": "Blue Riiot : valeur hors plage",
+        "de": "Blue Riiot: Wert außerhalb des Bereichs",
+        "es": "Blue Riiot: valor fuera de rango"
+      },
+      "description": {
+        "en": "A measure leaves its ideal range, or gets worse (from warning to critical). The ranges are the ones Blue Riiot sends with each measure.",
+        "fr": "Une mesure sort de sa plage idéale, ou s’aggrave (d’avertissement à critique). Les plages sont celles que Blue Riiot envoie avec chaque mesure.",
+        "de": "Ein Messwert verlässt seinen Idealbereich oder verschlechtert sich (von Warnung zu kritisch). Die Bereiche sendet Blue Riiot mit jeder Messung.",
+        "es": "Una medida sale de su rango ideal, o empeora (de aviso a crítico). Los rangos son los que Blue Riiot envía con cada medida."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          },
+          "description": {
+            "en": "One of the Blue Connect devices. Leave empty for any of them.",
+            "fr": "Un des Blue Connect. Laissez vide pour tous.",
+            "de": "Eines der Blue-Connect-Geräte. Leer lassen für jedes.",
+            "es": "Uno de los Blue Connect. Déjelo vacío para cualquiera."
+          },
+          "required": false
+        },
+        {
+          "key": "measure",
+          "type": "multi_select",
+          "label": {
+            "en": "Measure",
+            "fr": "Mesure",
+            "de": "Messwert",
+            "es": "Medida"
+          },
+          "description": {
+            "en": "Leave empty for any measure.",
+            "fr": "Laissez vide pour toutes les mesures.",
+            "de": "Leer lassen für jeden Messwert.",
+            "es": "Déjelo vacío para cualquier medida."
+          },
+          "options": [
+            {
+              "value": "temperature",
+              "label": {
+                "en": "Water temperature",
+                "fr": "Température de l’eau",
+                "de": "Wassertemperatur",
+                "es": "Temperatura del agua"
+              }
+            },
+            {
+              "value": "ph",
+              "label": {
+                "en": "pH",
+                "fr": "pH",
+                "de": "pH-Wert",
+                "es": "pH"
+              }
+            },
+            {
+              "value": "orp",
+              "label": {
+                "en": "Redox",
+                "fr": "Redox",
+                "de": "Redox",
+                "es": "Redox"
+              }
+            },
+            {
+              "value": "salinity",
+              "label": {
+                "en": "Salinity",
+                "fr": "Salinité",
+                "de": "Salzgehalt",
+                "es": "Salinidad"
+              }
+            }
+          ],
+          "required": false
+        },
+        {
+          "key": "level",
+          "type": "select",
+          "label": {
+            "en": "Level",
+            "fr": "Niveau",
+            "de": "Stufe",
+            "es": "Nivel"
+          },
+          "description": {
+            "en": "Leave empty for both.",
+            "fr": "Laissez vide pour les deux.",
+            "de": "Leer lassen für beide.",
+            "es": "Déjelo vacío para ambos."
+          },
+          "options": [
+            {
+              "value": "warning",
+              "label": {
+                "en": "Out of the ideal range",
+                "fr": "Hors de la plage idéale",
+                "de": "Außerhalb des Idealbereichs",
+                "es": "Fuera del rango ideal"
+              }
+            },
+            {
+              "value": "critical",
+              "label": {
+                "en": "Far out of it (critical)",
+                "fr": "Très en dehors (critique)",
+                "de": "Weit außerhalb (kritisch)",
+                "es": "Muy fuera (crítico)"
+              }
+            }
+          ],
+          "required": false
+        }
+      ],
+      "variables": [
+        {
+          "key": "device_name",
+          "type": "string",
+          "label": {
+            "en": "Device name",
+            "fr": "Nom de l’appareil",
+            "de": "Gerätename",
+            "es": "Nombre del dispositivo"
+          }
+        },
+        {
+          "key": "measure",
+          "type": "string",
+          "label": {
+            "en": "Measure",
+            "fr": "Mesure",
+            "de": "Messwert",
+            "es": "Medida"
+          },
+          "description": {
+            "en": "temperature, ph, orp or salinity.",
+            "fr": "temperature, ph, orp ou salinity.",
+            "de": "temperature, ph, orp oder salinity.",
+            "es": "temperature, ph, orp o salinity."
+          }
+        },
+        {
+          "key": "value",
+          "type": "number",
+          "label": {
+            "en": "Value",
+            "fr": "Valeur",
+            "de": "Wert",
+            "es": "Valor"
+          },
+          "description": {
+            "en": "°C, pH, mV or g/L, depending on the measure.",
+            "fr": "°C, pH, mV ou g/L selon la mesure.",
+            "de": "°C, pH, mV oder g/L, je nach Messwert.",
+            "es": "°C, pH, mV o g/L según la medida."
+          }
+        },
+        {
+          "key": "level",
+          "type": "string",
+          "label": {
+            "en": "Level",
+            "fr": "Niveau",
+            "de": "Stufe",
+            "es": "Nivel"
+          },
+          "description": {
+            "en": "warning or critical.",
+            "fr": "warning ou critical.",
+            "de": "warning oder critical.",
+            "es": "warning o critical."
+          }
+        },
+        {
+          "key": "previous_level",
+          "type": "string",
+          "label": {
+            "en": "Previous level",
+            "fr": "Niveau précédent",
+            "de": "Vorherige Stufe",
+            "es": "Nivel anterior"
+          },
+          "description": {
+            "en": "ok, warning or critical.",
+            "fr": "ok, warning ou critical.",
+            "de": "ok, warning oder critical.",
+            "es": "ok, warning o critical."
+          }
+        },
+        {
+          "key": "ok_min",
+          "type": "number",
+          "label": {
+            "en": "Ideal minimum",
+            "fr": "Minimum idéal",
+            "de": "Idealer Mindestwert",
+            "es": "Mínimo ideal"
+          }
+        },
+        {
+          "key": "ok_max",
+          "type": "number",
+          "label": {
+            "en": "Ideal maximum",
+            "fr": "Maximum idéal",
+            "de": "Idealer Höchstwert",
+            "es": "Máximo ideal"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          },
+          "description": {
+            "en": "A sentence ready to put in a message.",
+            "fr": "Une phrase prête à mettre dans un message.",
+            "de": "Ein Satz, fertig für eine Nachricht.",
+            "es": "Una frase lista para poner en un mensaje."
+          }
+        }
+      ]
+    },
+    {
+      "key": "back_in_range",
+      "label": {
+        "en": "Blue Riiot: value back in range",
+        "fr": "Blue Riiot : valeur revenue dans la plage",
+        "de": "Blue Riiot: Wert wieder im Bereich",
+        "es": "Blue Riiot: valor de nuevo en rango"
+      },
+      "description": {
+        "en": "A measure comes back into its ideal range.",
+        "fr": "Une mesure revient dans sa plage idéale.",
+        "de": "Ein Messwert kehrt in seinen Idealbereich zurück.",
+        "es": "Una medida vuelve a su rango ideal."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          },
+          "description": {
+            "en": "One of the Blue Connect devices. Leave empty for any of them.",
+            "fr": "Un des Blue Connect. Laissez vide pour tous.",
+            "de": "Eines der Blue-Connect-Geräte. Leer lassen für jedes.",
+            "es": "Uno de los Blue Connect. Déjelo vacío para cualquiera."
+          },
+          "required": false
+        },
+        {
+          "key": "measure",
+          "type": "multi_select",
+          "label": {
+            "en": "Measure",
+            "fr": "Mesure",
+            "de": "Messwert",
+            "es": "Medida"
+          },
+          "description": {
+            "en": "Leave empty for any measure.",
+            "fr": "Laissez vide pour toutes les mesures.",
+            "de": "Leer lassen für jeden Messwert.",
+            "es": "Déjelo vacío para cualquier medida."
+          },
+          "options": [
+            {
+              "value": "temperature",
+              "label": {
+                "en": "Water temperature",
+                "fr": "Température de l’eau",
+                "de": "Wassertemperatur",
+                "es": "Temperatura del agua"
+              }
+            },
+            {
+              "value": "ph",
+              "label": {
+                "en": "pH",
+                "fr": "pH",
+                "de": "pH-Wert",
+                "es": "pH"
+              }
+            },
+            {
+              "value": "orp",
+              "label": {
+                "en": "Redox",
+                "fr": "Redox",
+                "de": "Redox",
+                "es": "Redox"
+              }
+            },
+            {
+              "value": "salinity",
+              "label": {
+                "en": "Salinity",
+                "fr": "Salinité",
+                "de": "Salzgehalt",
+                "es": "Salinidad"
+              }
+            }
+          ],
+          "required": false
+        }
+      ],
+      "variables": [
+        {
+          "key": "device_name",
+          "type": "string",
+          "label": {
+            "en": "Device name",
+            "fr": "Nom de l’appareil",
+            "de": "Gerätename",
+            "es": "Nombre del dispositivo"
+          }
+        },
+        {
+          "key": "measure",
+          "type": "string",
+          "label": {
+            "en": "Measure",
+            "fr": "Mesure",
+            "de": "Messwert",
+            "es": "Medida"
+          },
+          "description": {
+            "en": "temperature, ph, orp or salinity.",
+            "fr": "temperature, ph, orp ou salinity.",
+            "de": "temperature, ph, orp oder salinity.",
+            "es": "temperature, ph, orp o salinity."
+          }
+        },
+        {
+          "key": "value",
+          "type": "number",
+          "label": {
+            "en": "Value",
+            "fr": "Valeur",
+            "de": "Wert",
+            "es": "Valor"
+          },
+          "description": {
+            "en": "°C, pH, mV or g/L, depending on the measure.",
+            "fr": "°C, pH, mV ou g/L selon la mesure.",
+            "de": "°C, pH, mV oder g/L, je nach Messwert.",
+            "es": "°C, pH, mV o g/L según la medida."
+          }
+        },
+        {
+          "key": "previous_level",
+          "type": "string",
+          "label": {
+            "en": "Previous level",
+            "fr": "Niveau précédent",
+            "de": "Vorherige Stufe",
+            "es": "Nivel anterior"
+          },
+          "description": {
+            "en": "ok, warning or critical.",
+            "fr": "ok, warning ou critical.",
+            "de": "ok, warning oder critical.",
+            "es": "ok, warning o critical."
+          }
+        },
+        {
+          "key": "ok_min",
+          "type": "number",
+          "label": {
+            "en": "Ideal minimum",
+            "fr": "Minimum idéal",
+            "de": "Idealer Mindestwert",
+            "es": "Mínimo ideal"
+          }
+        },
+        {
+          "key": "ok_max",
+          "type": "number",
+          "label": {
+            "en": "Ideal maximum",
+            "fr": "Maximum idéal",
+            "de": "Idealer Höchstwert",
+            "es": "Máximo ideal"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          },
+          "description": {
+            "en": "A sentence ready to put in a message.",
+            "fr": "Une phrase prête à mettre dans un message.",
+            "de": "Ein Satz, fertig für eine Nachricht.",
+            "es": "Una frase lista para poner en un mensaje."
+          }
+        }
+      ]
+    },
+    {
+      "key": "new_advice",
+      "label": {
+        "en": "Blue Riiot: new advice",
+        "fr": "Blue Riiot : nouveau conseil",
+        "de": "Blue Riiot: neuer Hinweis",
+        "es": "Blue Riiot: nuevo consejo"
+      },
+      "description": {
+        "en": "The Blue Connect app gives another advice on the water.",
+        "fr": "L’application Blue Connect donne un autre conseil sur l’eau.",
+        "de": "Die Blue-Connect-App gibt einen anderen Hinweis zum Wasser.",
+        "es": "La aplicación Blue Connect da otro consejo sobre el agua."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          },
+          "description": {
+            "en": "One of the Blue Connect devices. Leave empty for any of them.",
+            "fr": "Un des Blue Connect. Laissez vide pour tous.",
+            "de": "Eines der Blue-Connect-Geräte. Leer lassen für jedes.",
+            "es": "Uno de los Blue Connect. Déjelo vacío para cualquiera."
+          },
+          "required": false
+        }
+      ],
+      "variables": [
+        {
+          "key": "device_name",
+          "type": "string",
+          "label": {
+            "en": "Device name",
+            "fr": "Nom de l’appareil",
+            "de": "Gerätename",
+            "es": "Nombre del dispositivo"
+          }
+        },
+        {
+          "key": "advice_id",
+          "type": "string",
+          "label": {
+            "en": "Advice code",
+            "fr": "Code du conseil",
+            "de": "Hinweiscode",
+            "es": "Código del consejo"
+          },
+          "description": {
+            "en": "The code of Blue Riiot, such as SWP_OK.",
+            "fr": "Le code de Blue Riiot, par exemple SWP_OK.",
+            "de": "Der Code von Blue Riiot, zum Beispiel SWP_OK.",
+            "es": "El código de Blue Riiot, por ejemplo SWP_OK."
+          }
+        },
+        {
+          "key": "title",
+          "type": "string",
+          "label": {
+            "en": "Title",
+            "fr": "Titre",
+            "de": "Titel",
+            "es": "Título"
+          }
+        },
+        {
+          "key": "message",
+          "type": "string",
+          "label": {
+            "en": "Message",
+            "fr": "Message",
+            "de": "Nachricht",
+            "es": "Mensaje"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          },
+          "description": {
+            "en": "A sentence ready to put in a message.",
+            "fr": "Une phrase prête à mettre dans un message.",
+            "de": "Ein Satz, fertig für eine Nachricht.",
+            "es": "Una frase lista para poner en un mensaje."
+          }
+        }
+      ]
+    },
+    {
+      "key": "battery_low",
+      "label": {
+        "en": "Blue Riiot: battery low",
+        "fr": "Blue Riiot : batterie faible",
+        "de": "Blue Riiot: Batterie schwach",
+        "es": "Blue Riiot: batería baja"
+      },
+      "description": {
+        "en": "The battery of the Blue Connect turns low.",
+        "fr": "La batterie du Blue Connect devient faible.",
+        "de": "Die Batterie des Blue Connect wird schwach.",
+        "es": "La batería del Blue Connect se vuelve baja."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          },
+          "description": {
+            "en": "One of the Blue Connect devices. Leave empty for any of them.",
+            "fr": "Un des Blue Connect. Laissez vide pour tous.",
+            "de": "Eines der Blue-Connect-Geräte. Leer lassen für jedes.",
+            "es": "Uno de los Blue Connect. Déjelo vacío para cualquiera."
+          },
+          "required": false
+        }
+      ],
+      "variables": [
+        {
+          "key": "device_name",
+          "type": "string",
+          "label": {
+            "en": "Device name",
+            "fr": "Nom de l’appareil",
+            "de": "Gerätename",
+            "es": "Nombre del dispositivo"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          },
+          "description": {
+            "en": "A sentence ready to put in a message.",
+            "fr": "Une phrase prête à mettre dans un message.",
+            "de": "Ein Satz, fertig für eine Nachricht.",
+            "es": "Una frase lista para poner en un mensaje."
+          }
+        }
+      ]
+    },
+    {
+      "key": "measures_stopped",
+      "label": {
+        "en": "Blue Riiot: measures stopped",
+        "fr": "Blue Riiot : mesures arrêtées",
+        "de": "Blue Riiot: Messungen ausgeblieben",
+        "es": "Blue Riiot: medidas detenidas"
+      },
+      "description": {
+        "en": "No new measure for 48 hours (battery, Sigfox coverage, Blue Extender). Fired once, again only after measures came back.",
+        "fr": "Aucune nouvelle mesure depuis 48 heures (batterie, couverture Sigfox, Blue Extender). Déclenché une fois, de nouveau seulement après le retour des mesures.",
+        "de": "Seit 48 Stunden keine neue Messung (Batterie, Sigfox-Abdeckung, Blue Extender). Einmal ausgelöst, erneut erst nach der Rückkehr der Messungen.",
+        "es": "Sin nueva medida desde hace 48 horas (batería, cobertura Sigfox, Blue Extender). Se activa una vez, de nuevo solo tras volver las medidas."
+      },
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          },
+          "description": {
+            "en": "One of the Blue Connect devices. Leave empty for any of them.",
+            "fr": "Un des Blue Connect. Laissez vide pour tous.",
+            "de": "Eines der Blue-Connect-Geräte. Leer lassen für jedes.",
+            "es": "Uno de los Blue Connect. Déjelo vacío para cualquiera."
+          },
+          "required": false
+        }
+      ],
+      "variables": [
+        {
+          "key": "device_name",
+          "type": "string",
+          "label": {
+            "en": "Device name",
+            "fr": "Nom de l’appareil",
+            "de": "Gerätename",
+            "es": "Nombre del dispositivo"
+          }
+        },
+        {
+          "key": "last_measure_at",
+          "type": "string",
+          "label": {
+            "en": "Last measure at",
+            "fr": "Dernière mesure à",
+            "de": "Letzte Messung um",
+            "es": "Última medida a las"
+          },
+          "description": {
+            "en": "ISO 8601 (UTC).",
+            "fr": "ISO 8601 (UTC).",
+            "de": "ISO 8601 (UTC).",
+            "es": "ISO 8601 (UTC)."
+          }
+        },
+        {
+          "key": "hours",
+          "type": "number",
+          "label": {
+            "en": "Hours without a measure",
+            "fr": "Heures sans mesure",
+            "de": "Stunden ohne Messung",
+            "es": "Horas sin medida"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          },
+          "description": {
+            "en": "A sentence ready to put in a message.",
+            "fr": "Une phrase prête à mettre dans un message.",
+            "de": "Ein Satz, fertig für eine Nachricht.",
+            "es": "Una frase lista para poner en un mensaje."
+          }
+        }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "get_device",
+      "label": {
+        "en": "Blue Riiot: read a Blue Connect",
+        "fr": "Blue Riiot : lire un Blue Connect",
+        "de": "Blue Riiot: Blue Connect lesen",
+        "es": "Blue Riiot: leer un Blue Connect"
+      },
+      "description": {
+        "en": "The latest measures and the advice of a Blue Connect, for a message or a condition.",
+        "fr": "Les dernières mesures et le conseil d’un Blue Connect, pour un message ou une condition.",
+        "de": "Die letzten Messwerte und der Hinweis eines Blue Connect, für eine Nachricht oder eine Bedingung.",
+        "es": "Las últimas medidas y el consejo de un Blue Connect, para un mensaje o una condición."
+      },
+      "timeout_seconds": 15,
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          },
+          "description": {
+            "en": "Leave empty for the first Blue Connect of the account.",
+            "fr": "Laissez vide pour le premier Blue Connect du compte.",
+            "de": "Leer lassen für das erste Blue Connect des Kontos.",
+            "es": "Déjelo vacío para el primer Blue Connect de la cuenta."
+          },
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "key": "temperature",
+          "type": "number",
+          "label": {
+            "en": "Water temperature (°C)",
+            "fr": "Température de l’eau (°C)",
+            "de": "Wassertemperatur (°C)",
+            "es": "Temperatura del agua (°C)"
+          },
+          "description": {
+            "en": "-1 when the Blue Connect did not measure it.",
+            "fr": "-1 si le Blue Connect ne l’a pas mesuré.",
+            "de": "-1, wenn das Blue Connect ihn nicht gemessen hat.",
+            "es": "-1 si el Blue Connect no lo midió."
+          }
+        },
+        {
+          "key": "ph",
+          "type": "number",
+          "label": {
+            "en": "pH",
+            "fr": "pH",
+            "de": "pH-Wert",
+            "es": "pH"
+          },
+          "description": {
+            "en": "-1 when the Blue Connect did not measure it.",
+            "fr": "-1 si le Blue Connect ne l’a pas mesuré.",
+            "de": "-1, wenn das Blue Connect ihn nicht gemessen hat.",
+            "es": "-1 si el Blue Connect no lo midió."
+          }
+        },
+        {
+          "key": "orp",
+          "type": "number",
+          "label": {
+            "en": "Redox (mV)",
+            "fr": "Redox (mV)",
+            "de": "Redox (mV)",
+            "es": "Redox (mV)"
+          },
+          "description": {
+            "en": "-1 when the Blue Connect did not measure it.",
+            "fr": "-1 si le Blue Connect ne l’a pas mesuré.",
+            "de": "-1, wenn das Blue Connect ihn nicht gemessen hat.",
+            "es": "-1 si el Blue Connect no lo midió."
+          }
+        },
+        {
+          "key": "salinity",
+          "type": "number",
+          "label": {
+            "en": "Salinity (g/L)",
+            "fr": "Salinité (g/L)",
+            "de": "Salzgehalt (g/L)",
+            "es": "Salinidad (g/L)"
+          },
+          "description": {
+            "en": "-1 when the Blue Connect did not measure it.",
+            "fr": "-1 si le Blue Connect ne l’a pas mesuré.",
+            "de": "-1, wenn das Blue Connect ihn nicht gemessen hat.",
+            "es": "-1 si el Blue Connect no lo midió."
+          }
+        },
+        {
+          "key": "conductivity",
+          "type": "number",
+          "label": {
+            "en": "Conductivity (µS/cm)",
+            "fr": "Conductivité (µS/cm)",
+            "de": "Leitfähigkeit (µS/cm)",
+            "es": "Conductividad (µS/cm)"
+          },
+          "description": {
+            "en": "-1 when the Blue Connect did not measure it.",
+            "fr": "-1 si le Blue Connect ne l’a pas mesuré.",
+            "de": "-1, wenn das Blue Connect ihn nicht gemessen hat.",
+            "es": "-1 si el Blue Connect no lo midió."
+          }
+        },
+        {
+          "key": "free_chlorine",
+          "type": "number",
+          "label": {
+            "en": "Free chlorine (mg/L)",
+            "fr": "Chlore libre (mg/L)",
+            "de": "Freies Chlor (mg/L)",
+            "es": "Cloro libre (mg/L)"
+          },
+          "description": {
+            "en": "From the last test strip entered in the app, -1 without one.",
+            "fr": "Issu de la dernière bandelette saisie dans l’application, -1 sans bandelette.",
+            "de": "Aus dem letzten in der App erfassten Teststreifen, -1 ohne Streifen.",
+            "es": "De la última tira reactiva introducida en la aplicación, -1 sin tira."
+          }
+        },
+        {
+          "key": "alkalinity",
+          "type": "number",
+          "label": {
+            "en": "Alkalinity (mg/L)",
+            "fr": "Alcalinité (mg/L)",
+            "de": "Alkalinität (mg/L)",
+            "es": "Alcalinidad (mg/L)"
+          },
+          "description": {
+            "en": "From the last test strip entered in the app, -1 without one.",
+            "fr": "Issu de la dernière bandelette saisie dans l’application, -1 sans bandelette.",
+            "de": "Aus dem letzten in der App erfassten Teststreifen, -1 ohne Streifen.",
+            "es": "De la última tira reactiva introducida en la aplicación, -1 sin tira."
+          }
+        },
+        {
+          "key": "water_quality",
+          "type": "string",
+          "label": {
+            "en": "Water quality",
+            "fr": "Qualité de l’eau",
+            "de": "Wasserqualität",
+            "es": "Calidad del agua"
+          },
+          "description": {
+            "en": "ok, warning or critical: the worst of pH, redox and salinity against the ideal ranges of Blue Riiot.",
+            "fr": "ok, warning ou critical : le pire de pH, redox et salinité face aux plages idéales de Blue Riiot.",
+            "de": "ok, warning oder critical: der schlechteste Wert von pH, Redox und Salzgehalt gegenüber den Idealbereichen von Blue Riiot.",
+            "es": "ok, warning o critical: el peor de pH, redox y salinidad frente a los rangos ideales de Blue Riiot."
+          }
+        },
+        {
+          "key": "water_quality_text",
+          "type": "string",
+          "label": {
+            "en": "Water quality (text)",
+            "fr": "Qualité de l’eau (texte)",
+            "de": "Wasserqualität (Text)",
+            "es": "Calidad del agua (texto)"
+          },
+          "description": {
+            "en": "Good, To watch or Out of range, in the language of the texts.",
+            "fr": "Bonne, À surveiller ou Hors plage, dans la langue des textes.",
+            "de": "Gut, Im Auge behalten oder Außerhalb des Bereichs, in der Sprache der Texte.",
+            "es": "Buena, A vigilar o Fuera de rango, en el idioma de los textos."
+          }
+        },
+        {
+          "key": "battery_low",
+          "type": "boolean",
+          "label": {
+            "en": "Battery low",
+            "fr": "Batterie faible",
+            "de": "Batterie schwach",
+            "es": "Batería baja"
+          }
+        },
+        {
+          "key": "measured_at",
+          "type": "string",
+          "label": {
+            "en": "Measured at",
+            "fr": "Mesuré à",
+            "de": "Gemessen um",
+            "es": "Medido a las"
+          },
+          "description": {
+            "en": "ISO 8601 (UTC).",
+            "fr": "ISO 8601 (UTC).",
+            "de": "ISO 8601 (UTC).",
+            "es": "ISO 8601 (UTC)."
+          }
+        },
+        {
+          "key": "advice",
+          "type": "string",
+          "label": {
+            "en": "Advice",
+            "fr": "Conseil",
+            "de": "Hinweis",
+            "es": "Consejo"
+          },
+          "description": {
+            "en": "The advice of the Blue Connect app.",
+            "fr": "Le conseil de l’application Blue Connect.",
+            "de": "Der Hinweis der Blue-Connect-App.",
+            "es": "El consejo de la aplicación Blue Connect."
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          },
+          "description": {
+            "en": "A sentence ready to put in a message.",
+            "fr": "Une phrase prête à mettre dans un message.",
+            "de": "Ein Satz, fertig für eine Nachricht.",
+            "es": "Una frase lista para poner en un mensaje."
+          }
+        }
+      ]
+    },
+    {
+      "key": "fetch_measure",
+      "label": {
+        "en": "Blue Riiot: fetch from the Extender",
+        "fr": "Blue Riiot : relever l’Extender",
+        "de": "Blue Riiot: Extender abrufen",
+        "es": "Blue Riiot: recoger del Extender"
+      },
+      "description": {
+        "en": "Asks the cloud to take over the newest measure the Blue Extender keeps, like the Wi-Fi refresh of the app. It does not start a measure; the values arrive with the next reading. At most once every 10 minutes per Blue Connect.",
+        "fr": "Demande au cloud de reprendre la dernière mesure gardée par le Blue Extender, comme l’actualisation Wi-Fi de l’application. Elle ne lance pas de mesure ; les valeurs arrivent à la prochaine lecture. Au plus une fois toutes les 10 minutes par Blue Connect.",
+        "de": "Bittet die Cloud, die neueste vom Blue Extender gespeicherte Messung zu übernehmen, wie die WLAN-Aktualisierung der App. Es startet keine Messung; die Werte kommen beim nächsten Lesen. Höchstens alle 10 Minuten pro Blue Connect.",
+        "es": "Pide a la nube que recoja la última medida guardada por el Blue Extender, como la actualización wifi de la aplicación. No lanza una medida; los valores llegan con la próxima lectura. Como mucho una vez cada 10 minutos por Blue Connect."
+      },
+      "timeout_seconds": 30,
+      "fields": [
+        {
+          "key": "device",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          },
+          "description": {
+            "en": "Leave empty for the first Blue Connect of the account.",
+            "fr": "Laissez vide pour le premier Blue Connect du compte.",
+            "de": "Leer lassen für das erste Blue Connect des Kontos.",
+            "es": "Déjelo vacío para el primer Blue Connect de la cuenta."
+          },
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "key": "requested",
+          "type": "boolean",
+          "label": {
+            "en": "Asked",
+            "fr": "Demandé",
+            "de": "Angefragt",
+            "es": "Solicitado"
+          },
+          "description": {
+            "en": "False when it was already asked less than 10 minutes ago.",
+            "fr": "Faux si la demande a déjà été faite il y a moins de 10 minutes.",
+            "de": "Falsch, wenn schon vor weniger als 10 Minuten gefragt wurde.",
+            "es": "Falso si ya se pidió hace menos de 10 minutos."
+          }
+        },
+        {
+          "key": "message",
+          "type": "string",
+          "label": {
+            "en": "Message",
+            "fr": "Message",
+            "de": "Nachricht",
+            "es": "Mensaje"
+          },
+          "description": {
+            "en": "The answer of Blue Riiot, or a sentence in the language of the texts.",
+            "fr": "La réponse de Blue Riiot, ou une phrase dans la langue des textes.",
+            "de": "Die Antwort von Blue Riiot oder ein Satz in der Sprache der Texte.",
+            "es": "La respuesta de Blue Riiot, o una frase en el idioma de los textos."
+          }
+        }
+      ]
+    }
+  ]
+}

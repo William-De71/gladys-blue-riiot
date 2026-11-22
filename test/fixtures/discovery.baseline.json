@@ -1,0 +1,472 @@
+{
+  "devices": {
+    "blue": {
+      "external_id": "ext:blue-riiot:blue:0A1B2C3D",
+      "should_poll": false,
+      "params": ["BLUE_SERIAL", "BLUE_POOL_ID", "BLUE_FIRMWARE"],
+      "features": [
+        {
+          "external_id": "ext:blue-riiot:blue:0A1B2C3D:temperature",
+          "category": "temperature-sensor",
+          "type": "decimal",
+          "unit": "celsius",
+          "min": -10,
+          "max": 50,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:blue-riiot:blue:0A1B2C3D:ph",
+          "category": "ph-sensor",
+          "type": "decimal",
+          "unit": "ph",
+          "min": 0,
+          "max": 14,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:blue-riiot:blue:0A1B2C3D:orp",
+          "category": "orp-sensor",
+          "type": "decimal",
+          "unit": "millivolt",
+          "min": 0,
+          "max": 1200,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:blue-riiot:blue:0A1B2C3D:water_quality",
+          "category": "text",
+          "type": "text",
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:blue-riiot:blue:0A1B2C3D:advice",
+          "category": "text",
+          "type": "text",
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:blue-riiot:blue:0A1B2C3D:battery_low",
+          "category": "battery-low",
+          "type": "binary",
+          "min": 0,
+          "max": 1,
+          "read_only": true,
+          "has_feedback": false
+        }
+      ],
+      "options": []
+    },
+    "blue_salt": {
+      "external_id": "ext:blue-riiot:blue:0E1F2A3B",
+      "should_poll": false,
+      "params": ["BLUE_SERIAL", "BLUE_POOL_ID", "BLUE_FIRMWARE"],
+      "features": [
+        {
+          "external_id": "ext:blue-riiot:blue:0E1F2A3B:temperature",
+          "category": "temperature-sensor",
+          "type": "decimal",
+          "unit": "celsius",
+          "min": -10,
+          "max": 50,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:blue-riiot:blue:0E1F2A3B:ph",
+          "category": "ph-sensor",
+          "type": "decimal",
+          "unit": "ph",
+          "min": 0,
+          "max": 14,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:blue-riiot:blue:0E1F2A3B:orp",
+          "category": "orp-sensor",
+          "type": "decimal",
+          "unit": "millivolt",
+          "min": 0,
+          "max": 1200,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:blue-riiot:blue:0E1F2A3B:salinity",
+          "category": "level-sensor",
+          "type": "decimal",
+          "unit": "ppm",
+          "min": 0,
+          "max": 20000,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:blue-riiot:blue:0E1F2A3B:water_quality",
+          "category": "text",
+          "type": "text",
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:blue-riiot:blue:0E1F2A3B:advice",
+          "category": "text",
+          "type": "text",
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:blue-riiot:blue:0E1F2A3B:battery_low",
+          "category": "battery-low",
+          "type": "binary",
+          "min": 0,
+          "max": 1,
+          "read_only": true,
+          "has_feedback": false
+        }
+      ],
+      "options": []
+    }
+  },
+  "manifest": {
+    "config_schema": [
+      {
+        "key": "intro",
+        "type": "section"
+      },
+      {
+        "key": "email",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "type": "secret"
+      },
+      {
+        "key": "options_intro",
+        "type": "section"
+      },
+      {
+        "key": "poll_interval",
+        "type": "number"
+      },
+      {
+        "key": "language",
+        "type": "select"
+      }
+    ],
+    "scene_triggers": [
+      {
+        "key": "new_measure",
+        "fields": [
+          {
+            "key": "device",
+            "options": []
+          }
+        ],
+        "variables": [
+          {
+            "key": "device_name",
+            "type": "string"
+          },
+          {
+            "key": "temperature",
+            "type": "number"
+          },
+          {
+            "key": "ph",
+            "type": "number"
+          },
+          {
+            "key": "orp",
+            "type": "number"
+          },
+          {
+            "key": "salinity",
+            "type": "number"
+          },
+          {
+            "key": "water_quality",
+            "type": "string"
+          },
+          {
+            "key": "measured_at",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "out_of_range",
+        "fields": [
+          {
+            "key": "device",
+            "options": []
+          },
+          {
+            "key": "measure",
+            "options": ["temperature", "ph", "orp", "salinity"]
+          },
+          {
+            "key": "level",
+            "options": ["warning", "critical"]
+          }
+        ],
+        "variables": [
+          {
+            "key": "device_name",
+            "type": "string"
+          },
+          {
+            "key": "measure",
+            "type": "string"
+          },
+          {
+            "key": "value",
+            "type": "number"
+          },
+          {
+            "key": "level",
+            "type": "string"
+          },
+          {
+            "key": "previous_level",
+            "type": "string"
+          },
+          {
+            "key": "ok_min",
+            "type": "number"
+          },
+          {
+            "key": "ok_max",
+            "type": "number"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "back_in_range",
+        "fields": [
+          {
+            "key": "device",
+            "options": []
+          },
+          {
+            "key": "measure",
+            "options": ["temperature", "ph", "orp", "salinity"]
+          }
+        ],
+        "variables": [
+          {
+            "key": "device_name",
+            "type": "string"
+          },
+          {
+            "key": "measure",
+            "type": "string"
+          },
+          {
+            "key": "value",
+            "type": "number"
+          },
+          {
+            "key": "previous_level",
+            "type": "string"
+          },
+          {
+            "key": "ok_min",
+            "type": "number"
+          },
+          {
+            "key": "ok_max",
+            "type": "number"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "new_advice",
+        "fields": [
+          {
+            "key": "device",
+            "options": []
+          }
+        ],
+        "variables": [
+          {
+            "key": "device_name",
+            "type": "string"
+          },
+          {
+            "key": "advice_id",
+            "type": "string"
+          },
+          {
+            "key": "title",
+            "type": "string"
+          },
+          {
+            "key": "message",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "battery_low",
+        "fields": [
+          {
+            "key": "device",
+            "options": []
+          }
+        ],
+        "variables": [
+          {
+            "key": "device_name",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "measures_stopped",
+        "fields": [
+          {
+            "key": "device",
+            "options": []
+          }
+        ],
+        "variables": [
+          {
+            "key": "device_name",
+            "type": "string"
+          },
+          {
+            "key": "last_measure_at",
+            "type": "string"
+          },
+          {
+            "key": "hours",
+            "type": "number"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      }
+    ],
+    "scene_actions": [
+      {
+        "key": "get_device",
+        "fields": ["device"],
+        "outputs": [
+          {
+            "key": "temperature",
+            "type": "number"
+          },
+          {
+            "key": "ph",
+            "type": "number"
+          },
+          {
+            "key": "orp",
+            "type": "number"
+          },
+          {
+            "key": "salinity",
+            "type": "number"
+          },
+          {
+            "key": "conductivity",
+            "type": "number"
+          },
+          {
+            "key": "free_chlorine",
+            "type": "number"
+          },
+          {
+            "key": "alkalinity",
+            "type": "number"
+          },
+          {
+            "key": "water_quality",
+            "type": "string"
+          },
+          {
+            "key": "water_quality_text",
+            "type": "string"
+          },
+          {
+            "key": "battery_low",
+            "type": "boolean"
+          },
+          {
+            "key": "measured_at",
+            "type": "string"
+          },
+          {
+            "key": "advice",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "fetch_measure",
+        "fields": ["device"],
+        "outputs": [
+          {
+            "key": "requested",
+            "type": "boolean"
+          },
+          {
+            "key": "message",
+            "type": "string"
+          }
+        ]
+      }
+    ],
+    "widgets": [
+      {
+        "key": "pool",
+        "settings": ["device", "chart", "interval"],
+        "options": {
+          "chart": ["temperature", "ph", "orp", "salinity", "none"],
+          "interval": ["last-day", "last-three-days", "last-week", "last-month"]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+Gladys Blue Riiot integration
+Copyright 2026 William Deren
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Blue Riiot and Blue Connect are trademarks of their owner. This community
+integration is not affiliated with, endorsed or sponsored by Blue Riiot.
+
+The description of the Blue Riiot cloud interface comes from
+python-blueconnect (https://github.com/marcelveldt/python-blueconnect,
+Apache License 2.0); no code of it is included.

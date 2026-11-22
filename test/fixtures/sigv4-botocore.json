@@ -1,0 +1,37 @@
+[
+  {
+    "method": "GET",
+    "url": "https://api.riiotlabs.com/prod/swimming_pool",
+    "token": "tok-123",
+    "authorization": "AWS4-HMAC-SHA256 Credential=AKIDEXAMPLE/20261122/eu-west-1/execute-api/aws4_request, SignedHeaders=host;x-amz-date;x-amz-security-token, Signature=6937818da9b2fe1e7a4cf6b602cf85b366a0433d595d96a44c146a21868179f1",
+    "date": "20261122T134201Z"
+  },
+  {
+    "method": "GET",
+    "url": "https://api.riiotlabs.com/prod/swimming_pool/20d3be3a-6627-4cba-9939-40fb13d0d1db/blue/0A1B2C3D/lastMeasurements?mode=blue_and_strip",
+    "token": "tok-123",
+    "authorization": "AWS4-HMAC-SHA256 Credential=AKIDEXAMPLE/20261122/eu-west-1/execute-api/aws4_request, SignedHeaders=host;x-amz-date;x-amz-security-token, Signature=ecedf30a69891bf464a8405ee93014f6a5dffb7fe3d0093259f99fdb3098911d",
+    "date": "20261122T134201Z"
+  },
+  {
+    "method": "GET",
+    "url": "https://api.riiotlabs.com/prod/swimming_pool/abc/feed?lang=fr&b=2&a=x%20y",
+    "token": null,
+    "authorization": "AWS4-HMAC-SHA256 Credential=AKIDEXAMPLE/20261122/eu-west-1/execute-api/aws4_request, SignedHeaders=host;x-amz-date, Signature=0750d86d9b4891279321886320a39d2a95f38208eb730f849aa764081c6e4d07",
+    "date": "20261122T134201Z"
+  },
+  {
+    "method": "POST",
+    "url": "https://api.riiotlabs.com/prod/blue/0A1B2C3D/releaseLastUnprocessedEvent",
+    "token": "tok-123",
+    "authorization": "AWS4-HMAC-SHA256 Credential=AKIDEXAMPLE/20261122/eu-west-1/execute-api/aws4_request, SignedHeaders=host;x-amz-date;x-amz-security-token, Signature=329ceb3bcd70fcbcc06aabdee3f3af4e042297dea5a7150b340c4c4e5e707fee",
+    "date": "20261122T134201Z"
+  },
+  {
+    "method": "GET",
+    "url": "https://api.riiotlabs.com/prod/blue/a%20b",
+    "token": "tok-123",
+    "authorization": "AWS4-HMAC-SHA256 Credential=AKIDEXAMPLE/20261122/eu-west-1/execute-api/aws4_request, SignedHeaders=host;x-amz-date;x-amz-security-token, Signature=9a3ca0da515b2f584e693d4ddfdd560ac499d99ee96a468f778f2d337438d62a",
+    "date": "20261122T134201Z"
+  }
+]
